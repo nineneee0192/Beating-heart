@@ -2,41 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Beating Heart Box</title>
+<title>Heart Monitor</title>
 
 <style>
   body {
     margin: 0;
     height: 100vh;
-    background: #0b0b0b;
+    background: #050505;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
   }
 
-  /* BOX */
-  .box {
-    width: 300px;
-    height: 300px;
-    border: 2px solid #ff3b3b;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 25px rgba(255, 59, 59, 0.4);
-    background: radial-gradient(circle, #1a0000, #000);
+  /* GLASS BOX */
+  .monitor {
+    width: 360px;
+    height: 360px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 60, 60, 0.6);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
   }
 
   /* HEART */
   .heart {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 120px;
     height: 120px;
-    background: #ff2e2e;
-    transform: rotate(-45deg);
-    animation: heartbeat 1.2s infinite ease-in-out;
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+    background: #ff2d2d;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: heartbeat 1.15s infinite ease-in-out;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
   }
 
   .heart::before,
@@ -45,7 +47,7 @@
     position: absolute;
     width: 120px;
     height: 120px;
-    background: #ff2e2e;
+    background: #ff2d2d;
     border-radius: 50%;
   }
 
@@ -59,22 +61,56 @@
     top: 0;
   }
 
-  /* REALISTIC BEAT */
+  /* REAL HEARTBEAT (lub-dub) */
   @keyframes heartbeat {
-    0%   { transform: rotate(-45deg) scale(1); }
-    14%  { transform: rotate(-45deg) scale(1.25); }
-    28%  { transform: rotate(-45deg) scale(1); }
-    42%  { transform: rotate(-45deg) scale(1.2); }
-    70%  { transform: rotate(-45deg) scale(1); }
-    100% { transform: rotate(-45deg) scale(1); }
+    0%   { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    15%  { transform: translate(-50%, -50%) rotate(-45deg) scale(1.3); }
+    30%  { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    45%  { transform: translate(-50%, -50%) rotate(-45deg) scale(1.2); }
+    70%  { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+  }
+
+  /* EKG LINE */
+  .ekg {
+    position: absolute;
+    bottom: 40px;
+    left: -100%;
+    width: 200%;
+    height: 80px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      #ff3b3b 45%,
+      transparent 50%
+    );
+    animation: ekgMove 1.15s infinite linear;
+  }
+
+  @keyframes ekgMove {
+    from { left: -100%; }
+    to   { left: 100%; }
+  }
+
+  /* TEXT */
+  .label {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: #ff4d4d;
+    letter-spacing: 2px;
+    font-size: 14px;
+    opacity: 0.8;
   }
 </style>
 </head>
 
 <body>
 
-  <div class="box">
+  <div class="monitor">
+    <div class="label">HEART STATUS: ACTIVE</div>
     <div class="heart"></div>
+    <div class="ekg"></div>
   </div>
 
 </body>
