@@ -15,7 +15,6 @@
     font-family: Arial, sans-serif;
   }
 
-  /* GLASS BOX */
   .monitor {
     width: 360px;
     height: 360px;
@@ -26,9 +25,18 @@
     box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
 
-  /* HEART */
+  .label {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: #ff4d4d;
+    letter-spacing: 2px;
+    font-size: 14px;
+  }
+
   .heart {
     position: absolute;
     top: 50%;
@@ -37,7 +45,7 @@
     height: 120px;
     background: #ff2d2d;
     transform: translate(-50%, -50%) rotate(-45deg);
-    animation: heartbeat 1.15s infinite ease-in-out;
+    animation: heartbeat 1.15s infinite;
     box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
   }
 
@@ -61,7 +69,6 @@
     top: 0;
   }
 
-  /* REAL HEARTBEAT (lub-dub) */
   @keyframes heartbeat {
     0%   { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
     15%  { transform: translate(-50%, -50%) rotate(-45deg) scale(1.3); }
@@ -71,7 +78,6 @@
     100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
   }
 
-  /* EKG LINE */
   .ekg {
     position: absolute;
     bottom: 40px;
@@ -89,29 +95,66 @@
 
   @keyframes ekgMove {
     from { left: -100%; }
-    to   { left: 100%; }
+    to { left: 100%; }
   }
 
-  /* TEXT */
-  .label {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    color: #ff4d4d;
-    letter-spacing: 2px;
-    font-size: 14px;
-    opacity: 0.8;
+  /* FLATLINE MODE */
+  .flatline .heart {
+    animation: none;
+    opacity: 0.2;
+  }
+
+  .flatline .ekg {
+    animation: none;
+    background: #ff0000;
+    height: 2px;
+    bottom: 60px;
+  }
+
+  .flatline .label {
+    color: red;
   }
 </style>
 </head>
 
 <body>
 
-  <div class="monitor">
-    <div class="label">HEART STATUS: ACTIVE</div>
-    <div class="heart"></div>
-    <div class="ekg"></div>
-  </div>
+<div class="monitor" onclick="toggleFlatline()">
+  <div class="label" id="status">HEART STATUS: ACTIVE</div>
+  <div class="heart"></div>
+  <div class="ekg"></div>
+</div>
+
+<script>
+  let flatlined = false;
+  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function heartbeatSound() {
+    if (flatlined) return;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  }
+
+  setInterval(heartbeatSound, 1150);
+
+  function toggleFlatline() {
+    flatlined = !flatlined;
+    document.querySelector(".monitor").classList.toggle("flatline");
+    document.getElementById("status").textContent =
+      flatlined ? "HEART STATUS: FLATLINE" : "HEART STATUS: ACTIVE";
+  }
+</script>
 
 </body>
 </html>
