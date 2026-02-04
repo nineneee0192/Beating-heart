@@ -1,59 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Beating Heart</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0f0f0f;
-    }
+<meta charset="UTF-8">
+<title>Beating Heart Box</title>
 
-    .heart {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      background: red;
-      transform: rotate(-45deg);
-      animation: beat 1s infinite;
-    }
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #0b0b0b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      background: red;
-      border-radius: 50%;
-    }
+  /* BOX */
+  .box {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #ff3b3b;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 25px rgba(255, 59, 59, 0.4);
+    background: radial-gradient(circle, #1a0000, #000);
+  }
 
-    .heart::before {
-      top: -50px;
-      left: 0;
-    }
+  /* HEART */
+  .heart {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    background: #ff2e2e;
+    transform: rotate(-45deg);
+    animation: heartbeat 1.2s infinite ease-in-out;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+  }
 
-    .heart::after {
-      left: 50px;
-      top: 0;
-    }
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: #ff2e2e;
+    border-radius: 50%;
+  }
 
-    @keyframes beat {
-      0%   { transform: rotate(-45deg) scale(1); }
-      25%  { transform: rotate(-45deg) scale(1.1); }
-      50%  { transform: rotate(-45deg) scale(1); }
-      75%  { transform: rotate(-45deg) scale(1.15); }
-      100% { transform: rotate(-45deg) scale(1); }
-    }
-  </style>
+  .heart::before {
+    top: -60px;
+    left: 0;
+  }
+
+  .heart::after {
+    left: 60px;
+    top: 0;
+  }
+
+  /* REALISTIC BEAT */
+  @keyframes heartbeat {
+    0%   { transform: rotate(-45deg) scale(1); }
+    14%  { transform: rotate(-45deg) scale(1.25); }
+    28%  { transform: rotate(-45deg) scale(1); }
+    42%  { transform: rotate(-45deg) scale(1.2); }
+    70%  { transform: rotate(-45deg) scale(1); }
+    100% { transform: rotate(-45deg) scale(1); }
+  }
+</style>
 </head>
+
 <body>
 
-  <div class="heart"></div>
+  <div class="box">
+    <div class="heart"></div>
+  </div>
 
 </body>
 </html>
